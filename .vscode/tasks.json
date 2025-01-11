@@ -6,7 +6,7 @@
         {
             "label": "VSCMail",
             "type": "shell",
-            "command": "python3",
+            "command": "python",
             "args": [
                 "${workspaceFolder}/scripts/create_mail.py",
                 "${file}"
@@ -15,7 +15,7 @@
         {
             "label": "VSCMail console",
             "type": "shell",
-            "command": "python3",
+            "command": "python",
             "args": [
                 "${workspaceFolder}/scripts/create_mail.py",
                 "${file}",
