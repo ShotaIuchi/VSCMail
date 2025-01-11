@@ -4,6 +4,8 @@ import urllib.parse
 import webbrowser
 import yaml
 
+DOTDIR = '.vsmail'
+
 PWD = os.getcwd()
 CWD = os.path.dirname(os.path.abspath(__file__))
 HOME = os.path.expanduser('~')
@@ -18,26 +20,26 @@ class OpenConfig:
 
     def __enter__(self):
         # target file path
-        filepath = os.path.join(self.filepath, self.filename)
+        filepath = os.path.join(self.filepath, DOTDIR, self.filename)
         if os.path.exists(filepath):
             self.file = open(filepath, 'r', encoding='utf-8')
             return self.file
         # cwd file path
-        filepath = os.path.join(CWD, self.filename)
+        filepath = os.path.join(CWD, DOTDIR, self.filename)
         if os.path.exists(filepath):
             self.file = open(filepath, 'r', encoding='utf-8')
             return self.file
         # pwd file path
-        filepath = os.path.join(PWD, self.filename)
+        filepath = os.path.join(PWD, DOTDIR, self.filename)
         if os.path.exists(filepath):
             self.file = open(filepath, 'r', encoding='utf-8')
             return self.file
         # home file path
-        filepath = os.path.join(HOME, self.filename)
+        filepath = os.path.join(HOME, DOTDIR, self.filename)
         if os.path.exists(filepath):
             self.file = open(filepath, 'r', encoding='utf-8')
             return self.file
-        return self.file
+        return None
 
     def __exit__(self, exc_type, exc_value, traceback):
         if self.file:
