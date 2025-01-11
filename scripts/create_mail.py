@@ -1,3 +1,4 @@
+import argparse
 import os
 import sys
 import urllib.parse
@@ -76,11 +77,12 @@ def load_template(file):
 
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: python create_mail.py <email>")
-        sys.exit(1)
+    parser = argparse.ArgumentParser(description='Generate and send an email based on configuration and template files.')
+    parser.add_argument('file', type=str, help='Path to the template file used for generating the email.')
+    parser.add_argument('--console', action='store_true', help='Display the generated email content (title and body) in the console instead of sending it via the default mail client.')
+    args = parser.parse_args()
 
-    file = os.path.abspath(sys.argv[1])
+    file = args.file
     if not os.path.exists(file):
         print(f"File {file} not found")
         sys.exit(2)
@@ -106,6 +108,11 @@ def main():
             MSG = module.main(config.get('ARG', []))
         title = title.replace(TAG, MSG)
         body = body.replace(TAG, MSG)
+
+    if args.console:
+        print(title)
+        print(body)
+        sys.exit(0)
 
     title = urllib.parse.quote(title)
     body = urllib.parse.quote(body)

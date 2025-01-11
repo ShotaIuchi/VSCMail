@@ -11,6 +11,16 @@
                 "${workspaceFolder}/scripts/create_mail.py",
                 "${file}"
             ],
+        },
+        {
+            "label": "VSCMail console",
+            "type": "shell",
+            "command": "python3",
+            "args": [
+                "${workspaceFolder}/scripts/create_mail.py",
+                "${file}",
+                "--console"
+            ],
         }
     ]
 }
