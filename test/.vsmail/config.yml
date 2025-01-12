@@ -7,6 +7,13 @@
   MSG: 'value_date'
   ARG:
     - '%Y/%m/%d'
+- TAG: '${GITHUB_ISSUE}'
+  OPT: 'script'
+  MSG: 'value_github_issue'
+  ARG:
+    - '' # github token
+    - 'ShotaIuchi/VSCMail'
+    - '#{{number}}: {{title}} ({{state}})'
 - TAG: '${BUSYO}'
   MSG: 'SYSTEM'
 - TAG: '${OFFICE}'

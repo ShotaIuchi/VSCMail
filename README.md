@@ -9,6 +9,13 @@ VisualCodeCreateMail は、Visual Studio Code からテンプレートや設定�
 - Python 3.x
 - `PyYAML` ライブラリ (`pip install pyyaml`)
 
+### 一部機能
+
+- value_github_issue
+
+  - `requests` ライブラリ (`pip install requests`)
+  - `python-dotenv` ライブラリ (`pip install python-dotenv`)
+
 ## ファイル構成
 
 ```
@@ -36,6 +43,14 @@ project-root/
   OPT: "script"
   ARG:
     - "%Y/%m/%d"
+
+- TAG: "${GITHUB_ISSUE}"
+  OPT: "script"
+  MSG: "value_github_issue"
+  ARG:
+    - "" # github token
+    - "ShotaIuchi/VSCMail"
+    - "#{{number}}: {{title}} ({{state}})"
 
 - TAG: "${CUSTOM}"
   MSG: "custom_script"
