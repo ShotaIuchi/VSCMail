@@ -4,7 +4,6 @@ import sys
 import urllib.parse
 import webbrowser
 import yaml
-from dotenv import load_dotenv
 
 DOTDIR = '.vsmail'
 
@@ -83,8 +82,6 @@ def main():
     parser.add_argument('--console', action='store_true', help='Display the generated email content (title and body) in the console instead of sending it via the default mail client.')
     args = parser.parse_args()
 
-    load_dotenv()
-
     file = args.file
     if not os.path.exists(file):
         print(f"File {file} not found")
@@ -104,6 +101,8 @@ def main():
 
     for config in configs:
         TAG = config['TAG']
+        if TAG not in title and TAG not in body:
+            continue
         MSG = config['MSG']
         if config.get('OPT', '') == 'script':
             import importlib

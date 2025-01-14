@@ -30,6 +30,8 @@ def main(args):
         return 'Usage: value_github_issue.py <github-token> <repo>'
     token = args[0]
     if not token:
+        from dotenv import load_dotenv
+        load_dotenv()
         token = os.getenv('GITHUB_TOKEN')
     repo = args[1]
     format = f'#{{number}}: {{title}}'
