@@ -14,6 +14,13 @@
     - '' # github token
     - 'ShotaIuchi/VSCMail'
     - '#{{number}}: {{title}} ({{state}})'
+- TAG: '${REDMINE_ISSUE}'
+  OPT: 'script'
+  MSG: 'value_redmine_issue'
+  ARG:
+    - 'http://localhost:3000/'
+    - '6314d6c83293602c462be23dc243908559e51023' # api access key
+    - '#{{id}}: {{subject}} ({{state}})'
 - TAG: '${BUSYO}'
   MSG: 'SYSTEM'
 - TAG: '${OFFICE}'

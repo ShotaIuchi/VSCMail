@@ -11,6 +11,7 @@
 いっぱい
 
 ${GITHUB_ISSUE}
+${REDMINE_ISSUE}
 
 ■ 発生した問題
 むげん
