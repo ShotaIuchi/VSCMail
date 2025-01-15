@@ -1,26 +1,33 @@
 import os
-import requests
 from datetime import datetime
-
-
-def get_today_datetime_filter():
-    today = datetime.today()
-    start_date = today.replace(hour=0, minute=0, second=0, microsecond=0)
-    end_date = today.replace(hour=23, minute=59, second=59, microsecond=999999)
-    return start_date, end_date
 
 
 def get_updated_issues(redmine_url, api_key, user_name):
     from redminelib import Redmine
     redmine = Redmine(redmine_url, key=api_key)
 
-    start_date, end_date = get_today_datetime_filter()
+    today = datetime.today()
+    start_date = today.replace(hour=0, minute=0, second=0, microsecond=0)
+
     issues = redmine.issue.filter(
-        updated_on=f'><{start_date.strftime('%Y-%m-%dT%H:%M:%S')}|{end_date.strftime('%Y-%m-%dT%H:%M:%S')}',
+        updated_on=f'><{start_date.strftime('%Y-%m-%d')}',
         updated_by=user_name)
+
+    user = redmine.user.get(user_name)
 
     issue_dicts = []
     for issue in issues:
+        issue = redmine.issue.get(issue.id, include=['journals'])
+        if not issue or not issue.journals:
+            continue
+        isOk = False
+        for journal in issue.journals:
+            if journal.created_on > start_date:
+                if journal.user.name == user.name:
+                    isOk = True
+                    break
+        if not isOk:
+            continue
         issue_dict = {
             'id': issue.id,
             'subject': issue.subject,
