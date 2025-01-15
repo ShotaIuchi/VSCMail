@@ -19,7 +19,7 @@ def get_updated_issues(redmine_url, api_key, user_name):
         updated_on=f'><{start_date.strftime('%Y-%m-%dT%H:%M:%S')}|{end_date.strftime('%Y-%m-%dT%H:%M:%S')}',
         updated_by=user_name)
 
-    issue_dicts = {}
+    issue_dicts = []
     for issue in issues:
         issue_dict = {
             'id': issue.id,
@@ -34,10 +34,9 @@ def get_updated_issues(redmine_url, api_key, user_name):
             'created_on': issue.created_on.strftime('%Y-%m-%d %H:%M:%S'),
             'updated_on': issue.updated_on.strftime('%Y-%m-%d %H:%M:%S'),
             'description': issue.description,
-            'notes': issue.notes,
             'url': f'{redmine_url}/issues/{issue.id}',
         }
-        issue_dicts[issue.id] = issue_dict
+        issue_dicts.append(issue_dict)
     return True, issue_dicts
 
 
