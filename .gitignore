@@ -1,3 +1,6 @@
+# メールファイル用拡張子
+*.vcm
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
