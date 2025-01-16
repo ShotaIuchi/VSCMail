@@ -12,7 +12,7 @@
   MSG: 'value_github_issue'
   ARG:
     - '' # github token
-    - 'ShotaIuchi/VSCMail'
+    - '' # repository
     - '#{{number}}: {{title}} ({{state}})'
 - TAG: '${REDMINE_ISSUE}'
   OPT: 'script'

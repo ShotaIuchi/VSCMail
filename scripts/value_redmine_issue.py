@@ -9,41 +9,44 @@ def get_updated_issues(redmine_url, api_key):
     today = datetime.today()
     start_date = today.replace(hour=0, minute=0, second=0, microsecond=0)
 
-    issues = redmine.issue.filter(
-        updated_on=f'><{start_date.strftime('%Y-%m-%d')}',
-        updated_by='me')
+    try:
+        issues = redmine.issue.filter(
+            updated_on=f'><{start_date.strftime('%Y-%m-%d')}',
+            updated_by='me')
 
-    user = redmine.user.get('current')
+        user = redmine.user.get('current')
 
-    issue_dicts = []
-    for issue in issues:
-        issue = redmine.issue.get(issue.id, include=['journals'])
-        if not issue or not issue.journals:
-            continue
-        isOk = False
-        for journal in issue.journals:
-            if journal.created_on > start_date:
-                if journal.user.id == user.id:
-                    isOk = True
-                    break
-        if not isOk:
-            continue
-        issue_dict = {
-            'id': issue.id,
-            'subject': issue.subject,
-            'status': issue.status.name,
-            'priority': issue.priority.name,
-            'author': issue.author.name,
-            'assigned_to': issue.assigned_to.name if issue.assigned_to else '',
-            'start_date': issue.start_date.strftime('%Y-%m-%d') if issue.start_date else '',
-            'due_date': issue.due_date.strftime('%Y-%m-%d') if issue.due_date else '',
-            'done_ratio': issue.done_ratio,
-            'created_on': issue.created_on.strftime('%Y-%m-%d %H:%M:%S'),
-            'updated_on': issue.updated_on.strftime('%Y-%m-%d %H:%M:%S'),
-            'description': issue.description,
-            'url': f'{redmine_url}/issues/{issue.id}',
-        }
-        issue_dicts.append(issue_dict)
+        issue_dicts = []
+        for issue in issues:
+            issue = redmine.issue.get(issue.id, include=['journals'])
+            if not issue or not issue.journals:
+                continue
+            isOk = False
+            for journal in issue.journals:
+                if journal.created_on > start_date:
+                    if journal.user.id == user.id:
+                        isOk = True
+                        break
+            if not isOk:
+                continue
+            issue_dict = {
+                'id': issue.id,
+                'subject': issue.subject,
+                'status': issue.status.name,
+                'priority': issue.priority.name,
+                'author': issue.author.name,
+                'assigned_to': issue.assigned_to.name if issue.assigned_to else '',
+                'start_date': issue.start_date.strftime('%Y-%m-%d') if issue.start_date else '',
+                'due_date': issue.due_date.strftime('%Y-%m-%d') if issue.due_date else '',
+                'done_ratio': issue.done_ratio,
+                'created_on': issue.created_on.strftime('%Y-%m-%d %H:%M:%S'),
+                'updated_on': issue.updated_on.strftime('%Y-%m-%d %H:%M:%S'),
+                'description': issue.description,
+                'url': f'{redmine_url}/issues/{issue.id}',
+            }
+            issue_dicts.append(issue_dict)
+    except Exception as e:
+        return False, [str(e)]
     return True, issue_dicts
 
 

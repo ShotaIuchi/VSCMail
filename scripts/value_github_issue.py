@@ -16,12 +16,15 @@ def get_updated_issues(token, repo):
         'Accept': 'application/vnd.github.v3+json',
     }
     params = {'since': get_today_datetime_filter()}
-    response = requests.get(url, headers=headers, params=params)
-    if response.status_code != 200:
-        print(f'{response.status_code}, {response.json()}')
-        return False, [f'{response.status_code}, {response.json()}']
+    try:
+        response = requests.get(url, headers=headers, params=params)
+        if response.status_code != 200:
+            print(f'{response.status_code}, {response.json()}')
+            return False, [f'{response.status_code}, {response.json()}']
 
-    issues = response.json()
+        issues = response.json()
+    except Exception as e:
+        return False, [str(e)]
     return True, [issue for issue in issues if 'pull_request' not in issue]
 
 
