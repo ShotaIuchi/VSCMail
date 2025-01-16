@@ -15,7 +15,6 @@ HOME = os.path.expanduser('~')
 class OpenConfig:
     def __init__(self, target_filepath, filename):
         self.filepath = os.path.dirname(os.path.abspath(target_filepath))
-        print(self.filepath)
         self.filename = filename
         self.file = None
 
@@ -40,6 +39,8 @@ class OpenConfig:
         if os.path.exists(filepath):
             self.file = open(filepath, 'r', encoding='utf-8')
             return self.file
+        print('ERROR: .vsmail directory not found')
+        sys.exit(1)
         return None
 
     def __exit__(self, exc_type, exc_value, traceback):
@@ -67,11 +68,15 @@ def load_template(file):
         lines = fp.readlines()
 
     if len(lines) < 1:
-        print(f"File {file} is empty")
-        sys.exit(10)
+        print('ERROR: template file must have a title and a body')
+        sys.exit(1)
 
     title = lines[0]
     body = ''.join(lines[2:])
+
+    if not title or not body:
+        print('ERROR: template file must have a title and a body')
+        sys.exit(2)
 
     return title, body
 
@@ -84,20 +89,12 @@ def main():
 
     file = args.file
     if not os.path.exists(file):
-        print(f"File {file} not found")
-        sys.exit(2)
+        print(f'ERROR: File {file} not found')
+        sys.exit(1)
 
     env = load_env(file)
-    if not env:
-        print("Environment variables not found")
-        sys.exit(3)
-
     configs = load_config(file)
-
     title, body = load_template(file)
-    if not title or not body:
-        print("Template is empty")
-        sys.exit(4)
 
     for config in configs:
         TAG = config['TAG']
