@@ -2,7 +2,7 @@ import os
 from datetime import datetime
 
 
-def get_updated_issues(redmine_url, api_key, user_name):
+def get_updated_issues(redmine_url, api_key):
     from redminelib import Redmine
     redmine = Redmine(redmine_url, key=api_key)
 
@@ -11,9 +11,9 @@ def get_updated_issues(redmine_url, api_key, user_name):
 
     issues = redmine.issue.filter(
         updated_on=f'><{start_date.strftime('%Y-%m-%d')}',
-        updated_by=user_name)
+        updated_by='me')
 
-    user = redmine.user.get(user_name)
+    user = redmine.user.get('current')
 
     issue_dicts = []
     for issue in issues:
@@ -23,7 +23,7 @@ def get_updated_issues(redmine_url, api_key, user_name):
         isOk = False
         for journal in issue.journals:
             if journal.created_on > start_date:
-                if journal.user.name == user.name:
+                if journal.user.id == user.id:
                     isOk = True
                     break
         if not isOk:
@@ -59,7 +59,7 @@ def main(args):
     format = f'#{{id}}: {{subject}}'
     if len(args) > 2:
         format = args[2]
-    is_ok, issues = get_updated_issues(redmine_url, access_key, 'me')
+    is_ok, issues = get_updated_issues(redmine_url, access_key)
     if not is_ok:
         return issues[0]
     result = ''
