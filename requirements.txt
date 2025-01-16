@@ -1,0 +1,8 @@
+PyYAML
+# --- Optional dependencies ---
+# redmine, github
+requests
+python-dotenv
+# redmine
+python-redmine
+

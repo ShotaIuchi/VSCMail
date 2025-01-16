@@ -7,14 +7,12 @@ VisualCodeCreateMail は、Visual Studio Code からテンプレートや設定�
 ## 必要条件
 
 - Python 3.x
-- `PyYAML` ライブラリ (`pip install pyyaml`)
 
-### 一部機能
+## 必要ライブラリ
 
-- value_github_issue
-
-  - `requests` ライブラリ (`pip install requests`)
-  - `python-dotenv` ライブラリ (`pip install python-dotenv`)
+```
+$ pip install -i requirements.txt
+```
 
 ## ファイル構成
 
